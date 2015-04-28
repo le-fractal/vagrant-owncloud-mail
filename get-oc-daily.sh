@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # download latest daily build
+echo "Downloading owncloud daily tarball. This can take a few minutes."
 wget -P /root/ --no-check-certificate --quiet https://download.owncloud.org/community/daily/owncloud-daily-master.tar.bz2 
 mkdir /var/www/html/owncloud
 tar xvj --strip-components=1 --no-same-owner --no-same-permissions -f /root/owncloud-daily-master.tar.bz2 -C /var/www/html/owncloud
