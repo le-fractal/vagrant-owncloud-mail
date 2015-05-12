@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # OC_VERSION can be a branch (ex: "master") or a tag (ex: "v7.0.5")
-OC_VERSION="v7.0.2"
+OC_VERSION="master"
 cd /var/www/html
 git clone https://github.com/owncloud/core.git owncloud
 cd owncloud
