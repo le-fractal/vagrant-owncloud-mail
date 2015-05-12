@@ -1,10 +1,27 @@
 #!/bin/bash
 
+# OC_VERSION can be a branch (ex: "master") or a tag (ex: "v7.0.5")
+OC_VERSION="v7.0.2"
+cd /var/www/html
+git clone https://github.com/owncloud/core.git owncloud
+cd owncloud
+
+
+if [ `git branch --list ${OC_VERSION}`]
+then
+	# branch exists
+	git checkout ${OC_VERSION}
+else
+	# no branch by that name, probably a tag
+	git checkout -b ${OC_VERSION} ${OC_VERSION}
+fi
+git submodule update --init
+
 # download latest daily build
-echo "Downloading owncloud daily tarball. This can take a few minutes."
-wget -P /root/ --no-check-certificate --quiet https://download.owncloud.org/community/daily/owncloud-daily-master.tar.bz2 
-mkdir /var/www/html/owncloud
-tar xvj --strip-components=1 --no-same-owner --no-same-permissions -f /root/owncloud-daily-master.tar.bz2 -C /var/www/html/owncloud
+# echo "Downloading owncloud daily tarball. This can take a few minutes."
+# wget -P /root/ --no-check-certificate --quiet https://download.owncloud.org/community/daily/owncloud-daily-master.tar.bz2 
+# mkdir /var/www/html/owncloud
+# tar xvj --strip-components=1 --no-same-owner --no-same-permissions -f /root/owncloud-daily-master.tar.bz2 -C /var/www/html/owncloud
 
 # get config values from autoconfig file to bypass the first-run setup screen
 cp /vagrant/autoconfig.php /var/www/html/owncloud/config/
@@ -35,3 +52,5 @@ php composer.phar install
 chown -R www-data:www-data /var/www/html/owncloud/apps/mail
 cd /var/www/html/owncloud
 sudo -u www-data php occ app:enable mail
+
+
